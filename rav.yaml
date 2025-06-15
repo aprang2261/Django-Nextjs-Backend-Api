@@ -1,0 +1,13 @@
+scripts:
+  server:
+    - cd src && python manage.py runserver 8001
+  makemigrations:
+    - cd src && python manage.py makemigrations
+  migrate:
+    - cd src && python manage.py migrate
+  shell:
+    - cd src && python manage.py shell
+  curl_auth: |
+    powershell -Command "$r = Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8001/api/token/pair' -Headers @{\"Content-Type\"=\"application/json\"} -Body '{\"username\":\"cfe\",\"password\":\"learncode\"}'; Write-Output \"{username=cfe; refresh=$($r.refresh); access=$($r.access)}\""
+  curl_protect: |
+    powershell -Command "Invoke-RestMethod -Method GET -Uri 'http://127.0.0.1:8001/api/me' -Headers @{\"Authorization\" = \"Bearer <curl_auth-access-token>\"}"
